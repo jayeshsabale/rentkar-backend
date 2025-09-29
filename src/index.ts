@@ -13,9 +13,12 @@ const app = express()
 
 // Middleware
 app.use(express.json())
-// app.use(cors({ origin: 'https://rentkar.netlify.app', credentials: true }))
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }))
-
+app.use(
+  cors({
+    origin: ['http://localhost:3000', 'https://rentkar.netlify.app'],
+    credentials: true,
+  })
+)
 // Routes
 app.use('/api/auth', authRoutes)
 app.use('/api/orders', orderRoutes)

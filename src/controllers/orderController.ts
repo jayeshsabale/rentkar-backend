@@ -26,10 +26,22 @@ export const assignOrder = async (req: AuthRequest, res: Response) => {
       orderId,
       { assignedTo: partnerId, status: 'assigned' },
       { new: true }
-    )
+    ).populate('assignedTo', 'name email')
     res.json(order)
   } catch (err: any) {
     res.status(500).json({ message: err.message || 'Error assigning order' })
+  }
+}
+
+// ✅ Admin: Get all orders
+export const getAllOrders = async (req: AuthRequest, res: Response) => {
+  try {
+    const orders = await Order.find()
+      .populate('assignedTo', 'name email') // show partner info
+      .populate('createdBy', 'name email') // show admin who created
+    res.json(orders)
+  } catch (err: any) {
+    res.status(500).json({ message: err.message || 'Error fetching orders' })
   }
 }
 
